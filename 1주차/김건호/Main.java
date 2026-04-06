@@ -4,9 +4,17 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        
         System.out.println("아기사자 수를 입력하세요. : ");
-
-        int n = sc.nextInt();
+        
+        while (true) {
+            int n = sc.nextInt();
+            if (n < 5) {
+                System.out.println("5 이상의 숫자를 입력해주세요. ");
+            }
+            else break;
+        }
+        
         String[] member = new String[n];
 
         System.out.println("아기사자 이름을 입력해주세요 : ");
