@@ -1,6 +1,6 @@
 package 김태현.policy;
 
-public class StaffPolicy implements SubmitPolicy {
+public class LionSubmissionPolicy implements SubmissionPolicy {
     @Override
     public boolean canSubmit() {
         return false;
