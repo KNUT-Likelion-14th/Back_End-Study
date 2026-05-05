@@ -1,28 +1,32 @@
 package 김태현.role;
 
-import 김태현.policy.SubmitPolicy;
+import 김태현.policy.SubmissionPolicy;
 
-public abstract class Member {
+public abstract class Role {
 
     private String name;
     private String major;
     private int generation;
     private String part;
 
-    public Member(String name, String major, int generation, String part) {
+    public Role(String name, String major, int generation, String part) {
         this.name = name;
         this.major = major;
         this.generation = generation;
         this.part = part;
     }
 
-    public abstract SubmitPolicy getPolicy();
+    public abstract SubmissionPolicy getPolicy();
+    public abstract void printInfo();
+    public abstract String getRoleName();
 
     public boolean canSubmit() {
         return getPolicy().canSubmit();
     }
 
-    public abstract void printInfo();
+    public void printSummary(int index) {
+        System.out.println(index + ". [" + getRoleName() + "] " + name + " - " + generation + "기");
+    }
 
     public String getName() {return name;}
     public String getMajor() {return major;}
