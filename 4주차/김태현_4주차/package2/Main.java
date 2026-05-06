@@ -1,17 +1,23 @@
-package 김태현.package1;
+package 김태현_4주차.package2;
 
-import 김태현.role.Lion;
-import 김태현.role.Role;
-import 김태현.role.Staff;
+import 김태현_4주차.role.Lion;
+import 김태현_4주차.role.Role;
+import 김태현_4주차.role.Staff;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
 
-    // 멤버 저장할 List
+    // Step 1 과 동일 - 전체 멤버 List
     static List<Role> members = new ArrayList<>();
+
+    // Step 2 추가 - 파트별 멤버 Map
+    static Map<String, List<Role>> partMap = new HashMap<>();
+
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -27,6 +33,8 @@ public class Main {
             } else if (choice == 3) {
                 searchMember();
             } else if (choice == 4) {
+                searchByPart();
+            } else if (choice == 5) {
                 System.out.println("종료합니다.");
                 break;
             } else {
@@ -41,11 +49,12 @@ public class Main {
         System.out.println("1. 멤버 등록");
         System.out.println("2. 전체 멤버 조회");
         System.out.println("3. 이름으로 검색");
-        System.out.println("4. 종료");
+        System.out.println("4. 파트별 조회");
+        System.out.println("5. 종료");
         System.out.print("선택: ");
     }
 
-    // 멤버 등록
+    // 멤버 등록 (Map 에도 추가!)
     static void registerMember() {
         System.out.print("역할 선택 (1: 아기사자, 2: 운영진): ");
         int roleChoice = Integer.parseInt(scanner.nextLine().trim());
@@ -70,16 +79,30 @@ public class Main {
             }
         }
 
-        // 역할에 따라 다른 객체 생성
+        // 역할에 따라 객체 생성
+        Role newMember;
         if (roleChoice == 1) {
             System.out.print("학번: ");
             String studentId = scanner.nextLine();
-            members.add(new Lion(name, major, generation, part, studentId));
+            newMember = new Lion(name, major, generation, part, studentId);
         } else if (roleChoice == 2) {
             System.out.print("직책: ");
             String position = scanner.nextLine();
-            members.add(new Staff(name, major, generation, part, position));
+            newMember = new Staff(name, major, generation, part, position);
+        } else {
+            System.out.println("올바른 역할을 선택하세요.");
+            return;
         }
+
+        // List 에 추가
+        members.add(newMember);
+
+        // Map 에도 추가!
+        if (!partMap.containsKey(part)) {
+            // 해당 파트가 Map 에 없으면 새 List 생성
+            partMap.put(part, new ArrayList<>());
+        }
+        partMap.get(part).add(newMember);
 
         System.out.println("등록 완료: " + name);
     }
@@ -110,5 +133,37 @@ public class Main {
             }
         }
         System.out.println("해당 이름의 멤버가 없습니다.");
+    }
+
+    // 파트별 조회
+    static void searchByPart() {
+
+        if (partMap.isEmpty()) {
+            System.out.println("등록된 파트가 없습니다.");
+            return;
+        }
+
+        // 등록된 파트 목록 출력
+        System.out.print("\n등록된 파트: [");
+        String[] parts = partMap.keySet().toArray(new String[0]);
+        for (int i = 0; i < parts.length; i++) {
+            System.out.print(parts[i]);
+            if (i < parts.length - 1) System.out.print(", ");
+        }
+        System.out.println("]");
+
+        System.out.print("조회할 파트: ");
+        String partName = scanner.nextLine();
+
+        if (!partMap.containsKey(partName)) {
+            System.out.println("해당 파트가 없습니다.");
+            return;
+        }
+
+        System.out.println("\n✨ [" + partName + " 파트 멤버]");
+        List<Role> partMembers = partMap.get(partName);
+        for (int i = 0; i < partMembers.size(); i++) {
+            partMembers.get(i).printSummary(i + 1);
+        }
     }
 }
