@@ -1,7 +1,7 @@
-package 김태현;
+package 김태현_3주차;
 
-import 김태현.role.Lion;
-import 김태현.role.Staff;
+import 김태현_3주차.role.Lion;
+import 김태현_3주차.role.Staff;
 import java.util.Scanner;
 
 public class Main {
